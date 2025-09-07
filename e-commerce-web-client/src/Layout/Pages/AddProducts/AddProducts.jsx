@@ -1,7 +1,11 @@
 import { useState } from "react";
 import "./AddProducts.css";
+import Swal from "sweetalert2";
+import useAxiosSecure from "../../../Hooks/axiosSecure";
 
 const AddProducts = () => {
+  const axiosSecure = useAxiosSecure();
+  const [postLoading, setPostLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     category: "tshirt",
@@ -19,11 +23,40 @@ const AddProducts = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log("Product data:", formData);
-    alert("Product added successfully!");
+
+    setPostLoading(true);
+    await axiosSecure
+      .post("/add-new-product", formData)
+      .then((res) => {
+        if (res.data.insertedId) {
+          Swal.fire({
+            title: "Product added ",
+            text: "Your product added successfully. To check go to product page!",
+            icon: "success",
+          });
+        }
+
+        setFormData({
+          name: "",
+          category: "tshirt",
+          price: "",
+          description: "",
+          image: "",
+          stock: "",
+        });
+        setPostLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setPostLoading(false);
+        Swal.fire({
+          title: "Failed to add product",
+          text: "There might be some issue. Please try again!",
+          icon: "error",
+        });
+      });
   };
 
   return (
@@ -138,10 +171,7 @@ const AddProducts = () => {
 
             <div className="form-actions">
               <button type="submit" className="submit-btn">
-                Add Product
-              </button>
-              <button type="button" className="cancel-btn">
-                Cancel
+                {postLoading ? "Working...." : "Add Product"}
               </button>
             </div>
           </form>
