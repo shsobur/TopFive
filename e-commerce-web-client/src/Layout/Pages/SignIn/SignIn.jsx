@@ -1,8 +1,12 @@
-import { Link } from "react-router";
 import "./SignIn.css";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../../Context/AuthContext";
+import Swal from "sweetalert2";
 
 const SignIn = () => {
+  const navigate = useNavigate();
+  const { handleLoginUser, firebaseLoading } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -15,10 +19,31 @@ const SignIn = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    
+
+    const email = formData.email;
+    const password = formData.password;
+
+    await handleLoginUser(email, password).then(() => {
+      navigate("/");
+
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Signed in successfully",
+      });
+    });
   };
 
   return (
@@ -60,8 +85,12 @@ const SignIn = () => {
               </div>
             </div>
 
-            <button type="submit" className="signin-button">
-              Sign In
+            <button
+              disabled={firebaseLoading}
+              type="submit"
+              className="signin-button"
+            >
+              {firebaseLoading ? "Working...." : "Sign In"}
             </button>
           </form>
 
