@@ -1,12 +1,14 @@
 import "./SignIn.css";
 import { Link, useNavigate } from "react-router";
 import { useContext, useState } from "react";
+import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from "../../../Context/AuthContext";
 import Swal from "sweetalert2";
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const { handleLoginUser, firebaseLoading } = useContext(AuthContext);
+  const { handleLoginUser, handleGoogleSignIn, firebaseLoading } =
+    useContext(AuthContext);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -26,6 +28,29 @@ const SignIn = () => {
     const password = formData.password;
 
     await handleLoginUser(email, password).then(() => {
+      navigate("/");
+
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Signed in successfully",
+      });
+    });
+  };
+
+  // Handle google sign in__
+  const googleSignIn = async () => {
+    await handleGoogleSignIn().then(() => {
       navigate("/");
 
       const Toast = Swal.mixin({
@@ -99,8 +124,9 @@ const SignIn = () => {
               <span>Or continue with</span>
             </div>
             <div className="social-buttons">
-              <button className="social-btn google-btn">
+              <button onClick={googleSignIn} className="social-btn google-btn">
                 <i className="fab fa-google"></i>
+                <FcGoogle size={25} />
                 Google
               </button>
             </div>
