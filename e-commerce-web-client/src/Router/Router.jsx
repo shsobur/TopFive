@@ -4,6 +4,7 @@ import Banner from "../Layout/Pages/HomePage/Banner/Banner";
 import ErrorPage from "../Layout/Components/ErrorPage/ErrorPage";
 import SignUp from "../Layout/Pages/SignUp/SignUp";
 import SignIn from "../Layout/Pages/SignIn/SignIn";
+import AddProducts from "../Layout/Pages/AddProducts/AddProducts";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Banner></Banner>,
+      },
+      {
+        path: "/add-products",
+        element: <AddProducts></AddProducts>,
       },
       {
         path: "/sign-in",

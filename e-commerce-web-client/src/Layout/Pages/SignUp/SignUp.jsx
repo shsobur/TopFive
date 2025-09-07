@@ -24,8 +24,8 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const email = formData.email;
     const password = formData.password;
+    const email = formData.email;
 
     await handleCreateUser(email, password).then(() => {
       navigate("/");
