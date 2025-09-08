@@ -2,10 +2,12 @@ import "./MyCarts.css";
 import { useContext, useEffect, useState } from "react";
 import useAxiosSecure from "../../../Hooks/axiosSecure";
 import { AuthContext } from "../../../Context/AuthContext";
+import Swal from "sweetalert2";
 
 const MyCarts = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useContext(AuthContext);
+  const [cartLoading, setCartLoading] = useState(false);
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
@@ -13,20 +15,61 @@ const MyCarts = () => {
 
     const fetchCart = async () => {
       try {
+        setCartLoading(true);
         const res = await axiosSecure.get(`/cart-items/${user.email}`);
         setCart(res.data);
-      } catch (err) {
-        console.error("Failed to fetch cart items:", err);
+        setCartLoading(false);
+      } catch {
+        setCartLoading(false);
       }
     };
 
     fetchCart();
   }, [axiosSecure, user]);
 
-  const removeFromCart = (index) => {
-    const newCart = [...cart];
-    newCart.splice(index, 1);
-    setCart(newCart);
+  const handleDelete = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const deleteRes = await axiosSecure.delete(
+            `/delete-product-cart/${id}`
+          );
+
+          if (deleteRes.data.deletedCount > 0) {
+            const cartRes = await axiosSecure.get(`/cart-items/${user.email}`);
+            if (cartRes.data) {
+              setCart(cartRes.data);
+              Swal.fire({
+                title: "Item removed from cart",
+                icon: "success",
+                draggable: true,
+              });
+            }
+          } else {
+            Swal.fire({
+              title: "Delete failed",
+              text: "There might be some issue. Please try again!",
+              icon: "error",
+            });
+          }
+        } catch (error) {
+          console.error(error);
+          Swal.fire({
+            title: "Error",
+            text: "Something went wrong while deleting",
+            icon: "error",
+          });
+        }
+      }
+    });
   };
 
   return (
@@ -40,6 +83,10 @@ const MyCarts = () => {
             <h2>Your cart is empty</h2>
             <p>Add some products to see them here</p>
           </div>
+        ) : cartLoading ? (
+          <p className="text-5xl text-center my-20 font-semibold">
+            Cart Loading...
+          </p>
         ) : (
           <div className="cart-grid">
             {cart.map((item, index) => (
@@ -65,8 +112,8 @@ const MyCarts = () => {
                   </div>
 
                   <button
+                    onClick={() => handleDelete(item._id)}
                     className="remove-btn"
-                    onClick={() => removeFromCart(index)}
                   >
                     <i className="fas fa-trash"></i> Remove
                   </button>

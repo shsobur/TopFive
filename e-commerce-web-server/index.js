@@ -114,7 +114,7 @@ async function run() {
       }
     });
 
-    // Get products with filters__
+    // Find products with filters__
     app.get("/get-products", async (req, res) => {
       try {
         const { category, search, sort } = req.query;
@@ -162,6 +162,7 @@ async function run() {
       }
     });
 
+    // Find user carts__
     app.get("/cart-items/:email", verifyToken, async (req, res) => {
       try {
         const email = req.params.email;
@@ -183,6 +184,20 @@ async function run() {
       } catch (error) {
         console.error("Error fetching cart products:", error);
         res.status(500).json({ message: "Failed to fetch cart products" });
+      }
+    });
+
+    // Delete cart items__
+    app.delete("/delete-product-cart/:id", async (req, res) => {
+      try {
+        const id = req.params.id;
+        const query = { productId: id };
+        const result = await cartsCollection.deleteOne(query);
+
+        res.status(200).send(result);
+      } catch (error) {
+        console.error("Error deleting product from cart:", error);
+        res.status(500).send({ message: "Failed to delete product", error });
       }
     });
 
