@@ -1,8 +1,8 @@
 import "./MyCarts.css";
+import Swal from "sweetalert2";
 import { useContext, useEffect, useState } from "react";
 import useAxiosSecure from "../../../Hooks/axiosSecure";
 import { AuthContext } from "../../../Context/AuthContext";
-import Swal from "sweetalert2";
 
 const MyCarts = () => {
   const axiosSecure = useAxiosSecure();

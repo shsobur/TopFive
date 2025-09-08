@@ -8,7 +8,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-width: 90%;
+  min-width: 95%;
+  max-width: 96%;
   margin: 0 auto;
 }
 
@@ -29,11 +30,20 @@
   color: #ecf0f1;
   text-decoration: none;
   font-weight: 500;
+  padding: 0 5px;
   transition: color 0.3s;
+  border-bottom: 2px solid transparent;
 }
 
 .nav-link:hover {
-  color: #3498db;
+  color: #8b42de;
+}
+
+.active_style {
+  color: #ffffff;
+  padding: 0 5px;
+  transition: 0.2s ease-out;
+  border-bottom: 2px solid #ffffff;
 }
 
 .signin-btn {

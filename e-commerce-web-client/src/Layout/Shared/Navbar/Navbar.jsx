@@ -44,18 +44,51 @@ const Navbar = () => {
           </div>
 
           <div className={`nav-menu ${isOpen ? "active" : ""}`}>
-            <a href="/" className="nav-link">
-              Home
-            </a>
-            <a href="/products" className="nav-link">
-              Products
-            </a>
-            <a href="/my-carts" className="nav-link">
-              My Carts
-            </a>
-            <a href="/add-products" className="nav-link">
-              Add products
-            </a>
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                isActive ? "active_style" : "nav-link"
+              }
+            >
+              <a>Home</a>
+            </NavLink>
+
+            <NavLink
+              to="/products"
+              className={({ isActive }) =>
+                isActive ? "active_style" : "nav-link"
+              }
+            >
+              <a>Products</a>
+            </NavLink>
+
+            <NavLink
+              to="/my-carts"
+              className={({ isActive }) =>
+                isActive ? "active_style" : "nav-link"
+              }
+            >
+              <a>My Carts</a>
+            </NavLink>
+
+            <NavLink
+              to="/add-products"
+              className={({ isActive }) =>
+                isActive ? "active_style" : "nav-link"
+              }
+            >
+              <a>Add products</a>
+            </NavLink>
+
+            <NavLink
+              to="/about"
+              className={({ isActive }) =>
+                isActive ? "active_style" : "nav-link"
+              }
+            >
+              <a>About</a>
+            </NavLink>
+
             {user ? (
               <button onClick={handleSignOut} className="signin-btn">
                 Sign Out
