@@ -33,8 +33,8 @@ const Products = () => {
           },
         });
         setProducts(response.data);
-      } catch (err) {
-        console.error("Error fetching products:", err);
+      } catch {
+        // error hear__
       } finally {
         setLoading(false);
       }

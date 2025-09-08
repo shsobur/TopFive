@@ -48,8 +48,8 @@ const AddProducts = () => {
         });
         setPostLoading(false);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        // console.log(error);
         setPostLoading(false);
         Swal.fire({
           title: "Failed to add product",

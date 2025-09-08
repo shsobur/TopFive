@@ -101,8 +101,6 @@ const AuthProvider = ({ children }) => {
 
       return result;
     } catch (error) {
-      console.log(error.code, error.message);
-
       if (error.code === "auth/popup-closed-by-user") {
         Swal.fire({
           title: "Google Sign-In Cancelled",

@@ -60,8 +60,8 @@ const MyCarts = () => {
               icon: "error",
             });
           }
-        } catch (error) {
-          console.error(error);
+        } catch {
+          // console.error(error);
           Swal.fire({
             title: "Error",
             text: "Something went wrong while deleting",

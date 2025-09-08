@@ -32,8 +32,8 @@ const useAxiosSecure = () => {
                   '<a href="https://www.brightsec.com/blog/unauthorized-access-risks-examples-and-6-defensive-measures/" target="main"><u>Why do I have this issue?</u></a>',
               });
             })
-            .catch((error) => {
-              console.log(error);
+            .catch(() => {
+              // console.log(error);
             });
         }
 

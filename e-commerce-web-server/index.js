@@ -72,7 +72,7 @@ const cookieOption = {
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
 
     // DB Workshop ST__
 
@@ -203,10 +203,10 @@ async function run() {
 
     // DB Workshop END__
 
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
+    // await client.db("admin").command({ ping: 1 });
+    // console.log(
+    //   "Pinged your deployment. You successfully connected to MongoDB!"
+    // );
   } finally {
     // await client.close();
   }
